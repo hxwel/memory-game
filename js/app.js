@@ -17,7 +17,7 @@ let container = document.getElementsByClassName('container')[0];
 //win div for toggle
 let win = document.getElementsByClassName('win')[0];
 
-
+window.onload = restartGame;
 
 //timer
 var timer = 0;
@@ -36,6 +36,7 @@ restart.addEventListener('click', restartGame);
 
 //restarts the game
 function restartGame(){
+  console.log("here");
   cardList = shuffle(cardList);
 
   //resets timer
@@ -91,30 +92,31 @@ function cardFlip(e){
     return;
   }
 
-  //ignores already matched cards
-  if(pickedCard.className == 'card match'){
+  //ignores already matched and open cards
+  if(pickedCard.className == 'card match' || pickedCard.className == 'card show open'){
     return;
   }
 
   //changes class of clicked card
   pickedCard.className = 'card show open';
 
-  //adds 1 to move counter
-  let moves = parseInt(document.getElementsByClassName('moves')[0].innerHTML);
-  moves += 1;
-  counter.innerHTML = moves;
-
-  //removes stars after certain numer of moves
-  if(moves == 22){
-    stars.removeChild(stars.firstElementChild);
-  }
-  if(moves == 40){
-    stars.removeChild(stars.firstElementChild);
-  }
-
   //when two cards are open run matchCheck
   if(flippedCards.length == 2){
+    //adds 1 to move counter
+    let moves = parseInt(document.getElementsByClassName('moves')[0].innerHTML);
+    moves += 1;
+    counter.innerHTML = moves;
+
+    //removes stars after certain numer of moves
+    if(moves == 11){
+      stars.removeChild(stars.firstElementChild);
+    }
+    if(moves == 20){
+      stars.removeChild(stars.firstElementChild);
+    }
+
     matchCheck();
+
   }
 }
 
@@ -125,7 +127,7 @@ function matchCheck(){
     flippedCards[0].className = 'card match';
     flippedCards[0].className = 'card match';
     //check for game win
-    if(matchedCards.length == 2){
+    if(matchedCards.length == 16){
       setTimeout(function(){
         gameWin();
       }, 1300);
